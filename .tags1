@@ -1,0 +1,12 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+FIFO	/home/ryan/gem5_ALPHA_FS/gem5/src/mem/cache/tags/fifo.cc	/^FIFO::FIFO(const Params *p)$/;"	function	line:53	class:FIFO	signature:(const Params *p)
+accessBlock	/home/ryan/gem5_ALPHA_FS/gem5/src/mem/cache/tags/fifo.cc	/^FIFO::accessBlock(Addr addr, bool is_secure, Cycles &lat)$/;"	function	line:59	class:FIFO	signature:(Addr addr, bool is_secure, Cycles &lat)
+findVictim	/home/ryan/gem5_ALPHA_FS/gem5/src/mem/cache/tags/fifo.cc	/^FIFO::findVictim(Addr addr)$/;"	function	line:75	class:FIFO	signature:(Addr addr)
+insertBlock	/home/ryan/gem5_ALPHA_FS/gem5/src/mem/cache/tags/fifo.cc	/^FIFO::insertBlock(PacketPtr pkt, BlkType *blk)$/;"	function	line:98	class:FIFO	signature:(PacketPtr pkt, BlkType *blk)
+invalidate	/home/ryan/gem5_ALPHA_FS/gem5/src/mem/cache/tags/fifo.cc	/^FIFO::invalidate(CacheBlk *blk)$/;"	function	line:107	class:FIFO	signature:(CacheBlk *blk)
+create	/home/ryan/gem5_ALPHA_FS/gem5/src/mem/cache/tags/fifo.cc	/^FIFOParams::create()$/;"	function	line:117	class:FIFOParams	signature:()
