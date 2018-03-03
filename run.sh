@@ -1,6 +1,7 @@
-for j in canneal facesim #bodytrack dedup blackscholes 
+for j in blackscholes 
+#canneal #facesim #bodytrack dedup 
 do
-    for i in 1 2 
+    for i in 2 
     do
 	echo "**************running ${j} ${i} ..."
 	echo "    "
