@@ -61,7 +61,9 @@ class L1_ICache(L1Cache):
     writeback_clean = True
 
 class L1_DCache(L1Cache):
-    pass
+    #CS203 Hacking here
+    tags = Param.BaseTags(FIFO(), "Tag store (replacement policy)")
+    print "l1 cache set!"
 
 class L2Cache(Cache):
     assoc = 8
@@ -71,6 +73,9 @@ class L2Cache(Cache):
     mshrs = 20
     tgts_per_mshr = 12
     write_buffers = 8
+    #CS203 Hacking here
+    tags = Param.BaseTags(RandomRepl(), "Tag store (replacement policy)")
+    print "l2 cache set!"
 
 class IOCache(Cache):
     assoc = 8

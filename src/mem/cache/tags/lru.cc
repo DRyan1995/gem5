@@ -53,6 +53,7 @@
 LRU::LRU(const Params *p)
     : BaseSetAssoc(p)
 {
+    printf("lru is set\n");
 }
 
 CacheBlk*
