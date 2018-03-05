@@ -52,6 +52,7 @@
 #include "mem/cache/cache.hh"
 #include "mem/cache/mshr.hh"
 #include "mem/cache/tags/fa_lru.hh"
+#include "mem/cache/tags/lfu.hh"
 #include "mem/cache/tags/lru.hh"
 #include "mem/cache/tags/fifo.hh"
 #include "mem/cache/tags/random_repl.hh"

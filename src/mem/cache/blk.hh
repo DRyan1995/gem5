@@ -119,6 +119,8 @@ class CacheBlk
 
     Tick tickInserted;
 
+    unsigned long cache_hit_time;
+
   protected:
     /**
      * Represents that the indicated thread context has a "lock" on

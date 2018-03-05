@@ -75,6 +75,11 @@ class LRU(BaseSetAssoc):
     cxx_class = 'LRU'
     cxx_header = "mem/cache/tags/lru.hh"
 
+class LFU(BaseSetAssoc):
+    type = 'LFU'
+    cxx_class = 'LFU'
+    cxx_header = "mem/cache/tags/lfu.hh"
+
 class FIFO(BaseSetAssoc):
     type = "FIFO"
     cxx_class = "FIFO"
