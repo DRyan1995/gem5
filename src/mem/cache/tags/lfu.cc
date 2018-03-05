@@ -60,35 +60,32 @@ CacheBlk*
 LFU::accessBlock(Addr addr, bool is_secure, Cycles &lat)
 {
     CacheBlk *blk = BaseSetAssoc::accessBlock(addr, is_secure, lat);
-
-    // if (blk != nullptr) {
-    //     // move this block to head of the MRU list
-    //     sets[blk->set].moveToHead(blk);
-    //     DPRINTF(CacheRepl, "set %x: moving blk %x (%s) to MRU\n",
-    //             blk->set, regenerateBlkAddr(blk->tag, blk->set),
-    //             is_secure ? "s" : "ns");
-    // }
-    blk->cache_hit_time ++;
+    if (blk != nullptr) {
+        // move this block to head of the MRU list
+        sets[blk->set].moveToHead(blk);
+        DPRINTF(CacheRepl, "set %x: moving blk %x (%s) to MRU\n",
+                blk->set, regenerateBlkAddr(blk->tag, blk->set),
+                is_secure ? "s" : "ns");
+        blk->cache_hit_time ++;
+    }
     return blk;
 }
 
 CacheBlk*
 LFU::findVictim(Addr addr)
 {
-    BlkType *blk = nullptr;
     BlkType *ret = nullptr;
     unsigned long current_hit_time = 999999999;
     int set = extractSet(addr);
 
     // bool found_invalid_blk = false;
-
     // prefer to evict an invalid block
     for (int i = 0; i < allocAssoc; ++i) {
-        blk = sets[set].blks[i];
+        BlkType *blk = sets[set].blks[i];
         if (!blk->isValid()){
             return blk;
         }
-        if (blk->cache_hit_time < current_hit_time){
+        if (blk->cache_hit_time < current_hit_time && blk->cache_hit_time > 0){
             current_hit_time = blk->cache_hit_time;
             ret = blk;
         }
@@ -99,10 +96,12 @@ LFU::findVictim(Addr addr)
 void
 LFU::insertBlock(PacketPtr pkt, BlkType *blk)
 {
+
     BaseSetAssoc::insertBlock(pkt, blk);
 
     int set = extractSet(pkt->getAddr());
     sets[set].moveToHead(blk);
+
     blk->cache_hit_time = 0;
 }
 
