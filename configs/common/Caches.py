@@ -62,7 +62,7 @@ class L1_ICache(L1Cache):
 
 class L1_DCache(L1Cache):
     #CS203 Hacking here
-    tags = Param.BaseTags(LFU(), "Tag store (replacement policy)")
+    tags = Param.BaseTags(VictimCache(), "Tag store (replacement policy)")
     print "l1 cache set!"
 
 class L2Cache(Cache):

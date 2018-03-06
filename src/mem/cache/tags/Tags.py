@@ -85,6 +85,11 @@ class FIFO(BaseSetAssoc):
     cxx_class = "FIFO"
     cxx_header = "mem/cache/tags/fifo.hh"
 
+class VictimCache(BaseSetAssoc):
+    type = "VictimCache"
+    cxx_class = "VictimCache"
+    cxx_header = "mem/cache/tags/victim_cache.hh"
+
 class RandomRepl(BaseSetAssoc):
     type = 'RandomRepl'
     cxx_class = 'RandomRepl'
