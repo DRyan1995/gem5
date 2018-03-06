@@ -61,11 +61,11 @@ LFU::accessBlock(Addr addr, bool is_secure, Cycles &lat)
 {
     CacheBlk *blk = BaseSetAssoc::accessBlock(addr, is_secure, lat);
     if (blk != nullptr) {
-        // move this block to head of the MRU list
-        sets[blk->set].moveToHead(blk);
-        DPRINTF(CacheRepl, "set %x: moving blk %x (%s) to MRU\n",
-                blk->set, regenerateBlkAddr(blk->tag, blk->set),
-                is_secure ? "s" : "ns");
+        // // move this block to head of the MRU list
+        // sets[blk->set].moveToHead(blk);
+        // DPRINTF(CacheRepl, "set %x: moving blk %x (%s) to MRU\n",
+        //         blk->set, regenerateBlkAddr(blk->tag, blk->set),
+        //         is_secure ? "s" : "ns");
         blk->cache_hit_time ++;
     }
     return blk;

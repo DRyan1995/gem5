@@ -1,4 +1,4 @@
-for j in blackscholes #canneal #facesim #bodytrack dedup
+for j in canneal facesim #bodytrack dedup
 do
     for i in 2
     do

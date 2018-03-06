@@ -74,7 +74,7 @@ class L2Cache(Cache):
     tgts_per_mshr = 12
     write_buffers = 8
     #CS203 Hacking here
-    tags = Param.BaseTags(LFU(), "Tag store (replacement policy)")
+    tags = Param.BaseTags(LRU(), "Tag store (replacement policy)")
     print "l2 cache set!"
 
 class IOCache(Cache):
