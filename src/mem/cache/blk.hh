@@ -119,7 +119,7 @@ class CacheBlk
 
     Tick tickInserted;
 
-    unsigned long cache_hit_time;
+    unsigned long cache_hit_time = 0;
 
   protected:
     /**

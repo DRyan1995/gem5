@@ -62,35 +62,62 @@ LFU::accessBlock(Addr addr, bool is_secure, Cycles &lat)
     CacheBlk *blk = BaseSetAssoc::accessBlock(addr, is_secure, lat);
     if (blk != nullptr) {
         // // move this block to head of the MRU list
-        // sets[blk->set].moveToHead(blk);
-        // DPRINTF(CacheRepl, "set %x: moving blk %x (%s) to MRU\n",
-        //         blk->set, regenerateBlkAddr(blk->tag, blk->set),
-        //         is_secure ? "s" : "ns");
+        sets[blk->set].moveToHead(blk);
+        DPRINTF(CacheRepl, "set %x: moving blk %x (%s) to MRU\n",
+                blk->set, regenerateBlkAddr(blk->tag, blk->set),
+                is_secure ? "s" : "ns");
         blk->cache_hit_time ++;
     }
     return blk;
 }
 
+// CacheBlk*
+// LFU::findVictim(Addr addr)
+// {
+//     BlkType *ret = nullptr;
+//     unsigned long current_hit_time = 9999999;
+//     int set = extractSet(addr);
+//
+//     // bool found_invalid_blk = false;
+//     // prefer to evict an invalid block
+//     for (int i = 0; i < assoc; ++i) {
+//         BlkType *blk = sets[set].blks[i];
+//         if (!blk) continue;
+//
+//         if (!blk->isValid()){
+//             return blk;
+//         }
+//         if (blk->cache_hit_time < current_hit_time && blk->cache_hit_time > 0){
+//             current_hit_time = blk->cache_hit_time;
+//             ret = blk;
+//         }
+//     }
+//     return ret;
+// }
+
 CacheBlk*
 LFU::findVictim(Addr addr)
 {
-    BlkType *ret = nullptr;
-    unsigned long current_hit_time = 999999999;
     int set = extractSet(addr);
-
-    // bool found_invalid_blk = false;
-    // prefer to evict an invalid block
-    for (int i = 0; i < allocAssoc; ++i) {
-        BlkType *blk = sets[set].blks[i];
-        if (!blk->isValid()){
-            return blk;
-        }
-        if (blk->cache_hit_time < current_hit_time && blk->cache_hit_time > 0){
-            current_hit_time = blk->cache_hit_time;
-            ret = blk;
+    unsigned long min_hit_time = 99999999;
+    // grab a replacement candidate
+    BlkType *blk = nullptr;
+    for (int i = assoc - 1; i >= 0; i--) {
+        BlkType *b = sets[set].blks[i];
+        if (b->way < allocAssoc && b->cache_hit_time < min_hit_time) {
+            blk = b;
+            min_hit_time = blk->cache_hit_time;
         }
     }
-    return ret;
+
+    assert(!blk || blk->way < allocAssoc);
+
+    if (blk && blk->isValid()) {
+        DPRINTF(CacheRepl, "set %x: selecting blk %x for replacement\n",
+                set, regenerateBlkAddr(blk->tag, set));
+    }
+
+    return blk;
 }
 
 void

@@ -1,4 +1,5 @@
 *.img
+full_system_images_ALPHA/
 .tag*
 build
 parser.out

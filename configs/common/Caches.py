@@ -55,15 +55,14 @@ class L1Cache(Cache):
     mshrs = 4
     tgts_per_mshr = 20
 
+
 class L1_ICache(L1Cache):
     is_read_only = True
     # Writeback clean lines as well
     writeback_clean = True
 
 class L1_DCache(L1Cache):
-    #CS203 Hacking here
-    tags = Param.BaseTags(VictimCache(), "Tag store (replacement policy)")
-    print "l1 cache set!"
+    tags = Param.BaseTags(LFU(), "Tag store (replacement policy)")
 
 class L2Cache(Cache):
     assoc = 8
