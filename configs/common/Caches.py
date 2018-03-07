@@ -60,6 +60,7 @@ class L1_ICache(L1Cache):
     # Writeback clean lines as well
     writeback_clean = True
 
+#quick hacking here, make the victim cache as the actual l2 cache
 class VictimCache(Cache):
     assoc = 4
     tag_latency = 2
@@ -67,10 +68,13 @@ class VictimCache(Cache):
     response_latency = 2
     mshrs = 4
     tgts_per_mshr = 20
+    tags = Param.BaseTags(LRU(), "Tag store (replacement policy)")
+    print "l2cache set"
 
 class L1_DCache(L1Cache):
     tags = Param.BaseTags(LRU(), "Tag store (replacement policy)")
 
+#make the l2cache perform as the victimcache
 class L2Cache(Cache):
     assoc = 8
     tag_latency = 20
@@ -80,8 +84,8 @@ class L2Cache(Cache):
     tgts_per_mshr = 12
     write_buffers = 8
     #CS203 Hacking here
-    tags = Param.BaseTags(LRU(), "Tag store (replacement policy)")
-    print "l2 cache set!"
+    tags = Param.BaseTags(FIFO(), "Tag store (replacement policy)")
+    print "victim cache set!"
 
 class IOCache(Cache):
     assoc = 8

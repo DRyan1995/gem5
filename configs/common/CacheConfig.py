@@ -84,22 +84,28 @@ def config_cache(options, system):
         # Provide a clock for the L2 and the L1-to-L2 bus here as they
         # are not connected using addTwoLevelCacheHierarchy. Use the
         # same clock as the CPUs.
-        system.l2 = l2_cache_class(clk_domain=system.cpu_clk_domain,
-                                   size=options.l2_size,
-                                   assoc=options.l2_assoc)
-        system.tol2bus = L2XBar(clk_domain = system.cpu_clk_domain)
-        system.l2.cpu_side = system.tol2bus.master
         # system.l2.mem_side = system.membus.slave
         if options.victim_cache:
             print "victim_cache configing"
+            system.l2 = l2_cache_class(clk_domain=system.cpu_clk_domain,
+                                       size=options.victim_size,
+                                       assoc=options.victim_assoc)
+            system.tol2bus = L2XBar(clk_domain = system.cpu_clk_domain)
+            system.l2.cpu_side = system.tol2bus.master
+
             system.VictimCache = victim_cache_class(clk_domain=system.cpu_clk_domain,
-                                                    size=options.victim_size,
-                                                    assoc=options.victim_assoc)
+                                                    size=options.l2_size,
+                                                    assoc=options.l2_assoc)
             system.toVictimBus = VictimXBar(clk_domain = system.cpu_clk_domain)
             system.l2.mem_side = system.toVictimBus.slave
             system.VictimCache.cpu_side = system.toVictimBus.master
             system.VictimCache.mem_side = system.membus.slave
         else:
+            system.l2 = l2_cache_class(clk_domain=system.cpu_clk_domain,
+                                       size=options.l2_size,
+                                       assoc=options.l2_assoc)
+            system.tol2bus = L2XBar(clk_domain = system.cpu_clk_domain)
+            system.l2.cpu_side = system.tol2bus.master
             system.l2.mem_side = system.membus.slave
 
     if options.memchecker:
