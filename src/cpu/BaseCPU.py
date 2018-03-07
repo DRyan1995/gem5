@@ -50,7 +50,7 @@ from m5.params import *
 from m5.proxy import *
 from m5.util.fdthelper import *
 
-from XBar import L2XBar
+from XBar import L2XBar, VictimXBar
 from InstTracer import InstTracer
 from CPUTracers import ExeTracer
 from MemObject import MemObject
@@ -311,6 +311,15 @@ class BaseCPU(MemObject):
         self.l2cache = l2c
         self.toL2Bus.master = self.l2cache.cpu_side
         self._cached_ports = ['l2cache.mem_side']
+
+    def addVictimCacheHierarchy(self, ic, dc, l2c, iwc=None, dwc=None,
+                                  xbar=None):
+        self.addPrivateSplitL1Caches(ic, dc, iwc, dwc)
+        self.toVictimBus = VictimXBar()
+        self.connectCachedPorts(self.toVictimBus)
+        self.VictimCache = l2c
+        self.toVictimBus.master = self.l2cache.cpu_side
+        self._cached_ports = ['VictimCache.mem_side']
 
     def createThreads(self):
         # If no ISAs have been created, assume that the user wants the

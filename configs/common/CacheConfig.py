@@ -64,8 +64,8 @@ def config_cache(options, system):
             O3_ARM_v7a_DCache, O3_ARM_v7a_ICache, O3_ARM_v7aL2, \
             O3_ARM_v7aWalkCache
     else:
-        dcache_class, icache_class, l2_cache_class, walk_cache_class = \
-            L1_DCache, L1_ICache, L2Cache, None
+        dcache_class, icache_class, l2_cache_class, victim_cache_class, walk_cache_class  = \
+            L1_DCache, L1_ICache, L2Cache, VictimCache, None
 
         if buildEnv['TARGET_ISA'] == 'x86':
             walk_cache_class = PageTableWalkerCache
@@ -87,10 +87,20 @@ def config_cache(options, system):
         system.l2 = l2_cache_class(clk_domain=system.cpu_clk_domain,
                                    size=options.l2_size,
                                    assoc=options.l2_assoc)
-
         system.tol2bus = L2XBar(clk_domain = system.cpu_clk_domain)
         system.l2.cpu_side = system.tol2bus.master
-        system.l2.mem_side = system.membus.slave
+        # system.l2.mem_side = system.membus.slave
+        if options.victim_cache:
+            print "victim_cache configing"
+            system.VictimCache = victim_cache_class(clk_domain=system.cpu_clk_domain,
+                                                    size=options.victim_size,
+                                                    assoc=options.victim_assoc)
+            system.toVictimBus = VictimXBar(clk_domain = system.cpu_clk_domain)
+            system.l2.mem_side = system.toVictimBus.slave
+            system.VictimCache.cpu_side = system.toVictimBus.master
+            system.VictimCache.mem_side = system.membus.slave
+        else:
+            system.l2.mem_side = system.membus.slave
 
     if options.memchecker:
         system.memchecker = MemChecker()

@@ -55,14 +55,21 @@ class L1Cache(Cache):
     mshrs = 4
     tgts_per_mshr = 20
 
-
 class L1_ICache(L1Cache):
     is_read_only = True
     # Writeback clean lines as well
     writeback_clean = True
 
+class VictimCache(Cache):
+    assoc = 4
+    tag_latency = 2
+    data_latency = 2
+    response_latency = 2
+    mshrs = 4
+    tgts_per_mshr = 20
+
 class L1_DCache(L1Cache):
-    tags = Param.BaseTags(LFU(), "Tag store (replacement policy)")
+    tags = Param.BaseTags(LRU(), "Tag store (replacement policy)")
 
 class L2Cache(Cache):
     assoc = 8
